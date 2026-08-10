@@ -30,7 +30,12 @@ def process_body(all_blogs: list[BlogBody]) -> str:
     if formatted_body == f"#Your {all_blogs[0].month} Newsletter!\n":
         formatted_body = "# ERROR"
 
-    html = markdown.markdown(formatted_body)
+    html = f"""<html>
+    <body>
+    {markdown.markdown(formatted_body)}
+    </body>
+    </html>"""
+
     return html
 
 def write_email(group_id: str) -> tuple[list[str], str, str]:
