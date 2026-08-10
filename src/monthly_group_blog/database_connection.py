@@ -59,21 +59,26 @@ def get_current_month() -> int:
     dt_now = datetime.now()
     return dt_now.month
 
-def read_group_and_blog_body(group_id: str) -> tuple[Group, BlogBody]:
+def read_group_and_blog_body(group_id: str) -> tuple[Group, list[BlogBody]]:
     month = get_current_month()
 
     group_doc = groups_collection.find_one({"group_id": group_id})
     if not group_doc:
         raise ValueError(f"Group with ID {group_id} not found")
 
-    blog_doc = blog_body_collection.find_one({"group_id": group_id, "month": month})
-    if not blog_doc:
-        raise ValueError(f"Blog body for group {group_id} and month {month} not found")
+    blog_docs = list(blog_body_collection.find({"group_id": group_id, "month": month}))
+    if not blog_docs:
+        raise ValueError(...)
 
     group_doc.pop("_id", None)
-    blog_doc.pop("_id", None)
 
-    return Group.model_validate(group_doc), BlogBody.model_validate(blog_doc)
+    all_blogs: list[BlogBody] = []
+
+    for blog in blog_docs:
+        blog.pop("_id", None)
+        all_blogs.append(BlogBody.model_validate(blog))
+
+    return Group.model_validate(group_doc), all_blogs
 
 def insert_member_to_group(group_id: str, member_email: str, member_name: str) -> None:
     member = GroupMember(email=member_email, name=member_name)
