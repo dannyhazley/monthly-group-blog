@@ -7,7 +7,13 @@ authors = [
     { name = "Danny Hazley", email = "54882850+dannyhazley@users.noreply.github.com" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "datetime>=6.0",
+    "dotenv>=0.9.9",
+    "pydantic>=2.13.4",
+    "pymongo[srv]==3.12",
+    "typing-extensions>=4.16.0",
+]
 
 [project.scripts]
 monthly-group-blog = "monthly_group_blog:main"
