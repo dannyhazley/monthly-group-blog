@@ -3,7 +3,7 @@ This will script the actual text of the email
 It will apply formatting if possible and embed images
 """
 
-from database_connection import read_group_and_blog_body, Group, BlogBody
+from database_connection import read_group_and_blog_body, get_name_from_email, Group, BlogBody
 import markdown
 
 def get_all_recipients(group_id: Group) -> list[str]:
@@ -22,9 +22,9 @@ def process_body(all_blogs: list[BlogBody]) -> str:
 
     for blog in all_blogs:
         formatted_body += f"## {blog.header}\n"
-        formatted_body += f"{blog.body}\n"
-        formatted_body += f"![An image uploaded by {blog.name}]({blog.image})\n"
-        formatted_body += f"_By {blog.name}_\n"
+        formatted_body += f"{blog.body}\n\n"
+        formatted_body += f"![An image uploaded by {blog.email}]({blog.image})\n\n"
+        formatted_body += f"_By {get_name_from_email(blog.group_id, blog.email)}_\n\n"
         formatted_body += "---\n"
 
     if formatted_body == f"#Your {all_blogs[0].month} Newsletter!\n":

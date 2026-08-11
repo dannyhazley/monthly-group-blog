@@ -26,7 +26,7 @@ class Group(BaseModel):
 
 class BlogBody(BaseModel):
     group_id: str
-    name: str
+    email: str
     header: str
     body: str
     image: str
@@ -88,13 +88,27 @@ def insert_member_to_group(group_id: str, member_email: str, member_name: str) -
         upsert=True
     )
 
-def insert_blog_body(group_id: str, name: str, header: str, body: str, image: str) -> None:
+def insert_blog_body(group_id: str, email: str, header: str, body: str, image: str) -> None:
     month = get_current_month()
 
-    blog = BlogBody(group_id=group_id, name=name, header=header, body=body, image=image, month=month)
+    blog = BlogBody(group_id=group_id, email=email, header=header, body=body, image=image, month=month)
     blog_body_collection.update_one(
-        {"group_id": group_id, "month": month},
+        {"group_id": group_id, "month": month, "email": email},
         {"$set": blog.model_dump()},
         upsert=True
     )
 
+def get_name_from_email(group_id: str, email: str) -> str:
+    group_doc = groups_collection.find_one(
+        {"group_id": group_id},
+        {"_id": 0, "group_members": 1},
+    )
+
+    if not group_doc:
+        raise ValueError(f"Group {group_id} not found")
+
+    for member in group_doc.get("group_members", []):
+        if member["email"] == email:
+            return member["name"]
+
+    raise ValueError(f"No name found for email {email}")
