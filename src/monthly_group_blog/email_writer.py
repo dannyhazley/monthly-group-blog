@@ -19,7 +19,7 @@ def process_body(all_blogs: list[BlogBody]) -> str:
     """
     Process header, then body, then image.  Add name in italics as "By ____" and then a divider line
     """
-    formatted_body = f"#Your {month_name[all_blogs[0].month]} Newsletter!\n"
+    formatted_body = f" Your {month_name[all_blogs[0].month]} Newsletter!\n"
 
     for blog in all_blogs:
         formatted_body += f"## {blog.header}\n"

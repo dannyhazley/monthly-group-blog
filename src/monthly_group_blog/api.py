@@ -24,8 +24,6 @@ def add_blog_body():
 
     insert_blog_body(data["group_id"], data["email"], data["header"], data["body"], data["image"])
 
-    send_email(data["group_id"])
-
     return jsonify({"message": "Blog Body Added Successfully"}), 201
 
 @app.post("/api/send-email")
