@@ -4,6 +4,7 @@ It will apply formatting if possible and embed images
 """
 
 from database_connection import read_group_and_blog_body, get_name_from_email, Group, BlogBody
+from calendar import month_name
 import markdown
 
 def get_all_recipients(group_id: Group) -> list[str]:
@@ -18,7 +19,7 @@ def process_body(all_blogs: list[BlogBody]) -> str:
     """
     Process header, then body, then image.  Add name in italics as "By ____" and then a divider line
     """
-    formatted_body = f"#Your {all_blogs[0].month} Newsletter!\n"
+    formatted_body = f"#Your {month_name[all_blogs[0].month]} Newsletter!\n"
 
     for blog in all_blogs:
         formatted_body += f"## {blog.header}\n"
