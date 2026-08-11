@@ -2,7 +2,7 @@
 This will be the entry point for the application
 It will read, write, and send the email to the recipients
 """
-from email_writer import write_email
+from .email_writer import write_email
 from email.message import EmailMessage
 from dotenv import load_dotenv
 import smtplib

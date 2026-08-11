@@ -3,7 +3,7 @@ This will script the actual text of the email
 It will apply formatting if possible and embed images
 """
 
-from database_connection import read_group_and_blog_body, get_name_from_email, Group, BlogBody
+from .database_connection import read_group_and_blog_body, get_name_from_email, Group, BlogBody
 from calendar import month_name
 import markdown
 
